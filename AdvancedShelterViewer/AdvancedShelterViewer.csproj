@@ -70,8 +70,4 @@
     <ProjectReference Include="..\AdvancedShelterViewer.Shared\AdvancedShelterViewer.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\js\" />
-  </ItemGroup>
-
 </Project>
