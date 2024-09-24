@@ -33,8 +33,8 @@
     private async void LoadFile()
     {
         // Using MAUI we should set the default path based on the OS?        
-        var content = await JS.InvokeAsync<string>("window.readFileAsBase64", fileInput);
-        var jsonContent = await JS.InvokeAsync<JsonContent>("decryptString", content);
+        var content = await JS.InvokeAsync<string>("shelter.readFileAsBase64", fileInput);
+        var jsonContent = await JS.InvokeAsync<JsonContent>("Shelter.decryptString", content);
         //DecryptAsync(content);
     }
 
