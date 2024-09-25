@@ -1,11 +1,9 @@
-﻿
+﻿"use strict";
+const key = [2815074099, 1725469378, 4039046167, 874293617, 3063605751, 3133984764, 4097598161, 3620741625];
+sjcl.beware["CBC mode is dangerous because it doesn't protect message integrity."]();
 
-//const { sjcl, key, iv, fromBits, decrypt, aes, toBits } = require('./aes.js');
-
-//export class shelter {
-
-
-window.readFileAsBase64 = (fileInput) => {
+window.shelter = {
+    readFileAsBase64: async function (fileInput) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.onerror = () => {
@@ -15,24 +13,22 @@ window.readFileAsBase64 = (fileInput) => {
             reader.onload = () => {
                 resolve(reader.result);
             };
-            //reader.readAsDataURL(fileInput.files[0]);
             reader.readAsText(fileInput.files[0]);
         });
-    };
+    },
 
-    /*
-    decryptString2 = (base64String) => {
+    decryptString: async function (base64String) {
         return new Promise((resolve, reject) => {
-            var cipherBits = sjcl.codec.base64.toBits(base64Str);
-            var prp = new sjcl.cipher.aes(key);
-            var plainBits = sjcl.mode.cbc.decrypt(prp, cipherBits, iv);
-            var jsonStr = sjcl.codec.utf8String.fromBits(plainBits);
+            const iv = sjcl.codec.hex.toBits("7475383967656A693334307438397532");
+            const cipherBits = sjcl.codec.base64.toBits(base64String);
+            const prp = new sjcl.cipher.aes(key);
+            const plainBits = sjcl.mode.cbc.decrypt(prp, cipherBits, iv);
+            const jsonStr = sjcl.codec.utf8String.fromBits(plainBits);
             try {
-                console.log(JSON.parse(jsonStr));
-                resolve(JSON.parse(jsonStr));
+                 resolve(jsonStr);
             } catch (e) {
                 reject(new Error("Error Decrypting String"));
             }
         });
-
-    }*/
+    }
+}

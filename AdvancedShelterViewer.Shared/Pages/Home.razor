@@ -29,52 +29,8 @@
     private async void LoadFile()
     {
         // Using MAUI we should set the default path based on the OS?        
-
-        // Note this does not work in web?
-        //var hs = await JS.InvokeAsync<string>("readFileAsBase64_hs", fileInput);
-        //Console.WriteLine(hs);
-        var content = await JS.InvokeAsync<string>("readFileAsBase64", fileInput);
-
-        //var content2 = await JS.InvokeAsync<string>("shelter.readFileAsBase642", fileInput);
-
-        Console.WriteLine(content);
-
+        var content = await JS.InvokeAsync<string>("shelter.readFileAsBase64", fileInput);
         var jsonString = await JS.InvokeAsync<string>("shelter.decryptString", content);
         Console.WriteLine(jsonString);
     }
-     
 }
-<!--
-<script>
-    window.readFileAsBase64_hs = (fileInput) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onerror = () => {
-                reader.abort();
-                reject(new Error("Error reading file."));
-            };
-            reader.onload = () => {
-                resolve(reader.result);
-            };
-            reader.readAsText(fileInput.files[0]);
-        });
-    };
-</script>-->
-<!--
-<script>
-    window.decryptString = (base64String) => {
-        return new Promise((resolve, reject) => {
-            var cipherBits = sjcl.codec.base64.toBits(base64Str);
-            var prp = new sjcl.cipher.aes(key);
-            var plainBits = sjcl.mode.cbc.decrypt(prp, cipherBits, iv);
-            var jsonStr = sjcl.codec.utf8String.fromBits(plainBits);
-            try {
-                console.log(JSON.parse(jsonStr));
-                resolve(JSON.parse(jsonStr));
-            } catch (e) {
-                reject(new Error("Error Decrypting String"));
-            }
-        };
-
-    };
-</script>-->
