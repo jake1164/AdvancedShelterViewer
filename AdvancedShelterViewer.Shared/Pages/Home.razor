@@ -22,10 +22,6 @@
     For Steam Version the save is in:<br /> "C:\Users\YOURUSERNAME\AppData\Local\FalloutShelter"
     <br />
     For Android Version the Save is in:<br /> "storage/sdcard/Android/data/com.bethsoft.falloutshelter/files"
-    <script>
-
-    </script>
-
 </div>
 
 @code {
@@ -33,34 +29,52 @@
     private async void LoadFile()
     {
         // Using MAUI we should set the default path based on the OS?        
-        var content = await JS.InvokeAsync<string>("shelter.readFileAsBase64", fileInput);
-        var jsonContent = await JS.InvokeAsync<JsonContent>("Shelter.decryptString", content);
-        //DecryptAsync(content);
-    }
 
-    /// <summary>
-    /* function decrypt(evt, fileName, base64Str) {
-    var cipherBits = sjcl.codec.base64.toBits(base64Str);
-    var prp = new sjcl.cipher.aes(key);
-    var plainBits = sjcl.mode.cbc.decrypt(prp, cipherBits, iv);
-    var jsonStr = sjcl.codec.utf8String.fromBits(plainBits);
-        try {
-        document.getElementById("presetSaveName").value = fileName;
-        edit(fileName, JSON.parse(jsonStr));
-        } catch (e) {
-        throw "Decrypted file does not contain valid JSON: " + e
+        // Note this does not work in web?
+        //var hs = await JS.InvokeAsync<string>("readFileAsBase64_hs", fileInput);
+        //Console.WriteLine(hs);
+        var content = await JS.InvokeAsync<string>("readFileAsBase64", fileInput);
+
+        //var content2 = await JS.InvokeAsync<string>("shelter.readFileAsBase642", fileInput);
+
+        Console.WriteLine(content);
+
+        var jsonString = await JS.InvokeAsync<string>("shelter.decryptString", content);
+        Console.WriteLine(jsonString);
     }
-    }
-    */
-    /// </summary>
-    /// <param name="file"></param>
-    private async void DecryptAsync(string content)
-    {
-        long[] key = { 2815074099, 1725469378, 4039046167, 874293617, 3063605751, 3133984764, 4097598161, 3620741625};
-        var iv = await JS.InvokeAsync<int[]>("sjcl.codec.hex.toBits", "7475383967656A693334307438397532");
-        var cipherBits = await JS.InvokeAsync<int[]>("sjcl.codec.base64.toBits", content);
-        var prp = await JS.InvokeAsync<Object>("sjcl.cipher.aes", key);
-        var plainBits = await JS.InvokeAsync<long[]>("sjcl.mode.cbc.decrypt", prp, cipherBits, iv);
-        var jsonString = await JS.InvokeAsync<string>("sjcl.codec.utf8String.fromBits", plainBits);
-    }
+     
 }
+<!--
+<script>
+    window.readFileAsBase64_hs = (fileInput) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => {
+                reader.abort();
+                reject(new Error("Error reading file."));
+            };
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.readAsText(fileInput.files[0]);
+        });
+    };
+</script>-->
+<!--
+<script>
+    window.decryptString = (base64String) => {
+        return new Promise((resolve, reject) => {
+            var cipherBits = sjcl.codec.base64.toBits(base64Str);
+            var prp = new sjcl.cipher.aes(key);
+            var plainBits = sjcl.mode.cbc.decrypt(prp, cipherBits, iv);
+            var jsonStr = sjcl.codec.utf8String.fromBits(plainBits);
+            try {
+                console.log(JSON.parse(jsonStr));
+                resolve(JSON.parse(jsonStr));
+            } catch (e) {
+                reject(new Error("Error Decrypting String"));
+            }
+        };
+
+    };
+</script>-->

@@ -1,24 +1,27 @@
-﻿"use strict";
+﻿
 
-const { sjcl, key, iv, fromBits, decrypt, aes, toBits } = require('./aes.js');
+//const { sjcl, key, iv, fromBits, decrypt, aes, toBits } = require('./aes.js');
 
-window.shelter { 
-    readFileAsBase64 = (fileInput) => {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onerror = () => {
-                    reader.abort();
-                    reject(new Error("Error reading file."));
-                };
-                reader.onload = () => {
-                    resolve(reader.result);
-                };
-                //reader.readAsDataURL(fileInput.files[0]);
-                reader.readAsText(fileInput.files[0]);
-            });
-        }
+//export class shelter {
 
-    decryptString = (base64String) => {
+
+window.readFileAsBase64 = (fileInput) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onerror = () => {
+                reader.abort();
+                reject(new Error("Error reading file."));
+            };
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            //reader.readAsDataURL(fileInput.files[0]);
+            reader.readAsText(fileInput.files[0]);
+        });
+    };
+
+    /*
+    decryptString2 = (base64String) => {
         return new Promise((resolve, reject) => {
             var cipherBits = sjcl.codec.base64.toBits(base64Str);
             var prp = new sjcl.cipher.aes(key);
@@ -30,7 +33,6 @@ window.shelter {
             } catch (e) {
                 reject(new Error("Error Decrypting String"));
             }
-        };
+        });
 
-    };
-}
+    }*/
